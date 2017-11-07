@@ -9,6 +9,7 @@ const wpwatch = require('./lib/wpwatch');
 const cleanup = require('./lib/cleanup');
 const run = require('./lib/run');
 const prepareLocalInvoke = require('./lib/prepareLocalInvoke');
+const prepareRun = require('./lib/prepareRun');
 const prepareOfflineInvoke = require('./lib/prepareOfflineInvoke');
 const packExternalModules = require('./lib/packExternalModules');
 const packageModules = require('./lib/packageModules');
@@ -41,6 +42,7 @@ class ServerlessWebpack {
       packExternalModules,
       packageModules,
       prepareLocalInvoke,
+      prepareRun,
       prepareOfflineInvoke
     );
 
@@ -106,6 +108,12 @@ class ServerlessWebpack {
           }
           return BbPromise.resolve();
         }),
+
+      'before:run:run': () => BbPromise.bind(this)
+        .then(() => _.set(this.serverless, 'service.package.individually', false))
+        .then(() => this.serverless.pluginManager.spawn('webpack:validate'))
+        .then(() => this.serverless.pluginManager.spawn('webpack:compile'))
+        .then(this.prepareRun),
 
       'webpack:webpack': () => BbPromise.bind(this)
         .then(() => this.serverless.pluginManager.spawn('webpack:validate'))
