@@ -113,6 +113,7 @@ class ServerlessWebpack {
         .then(() => _.set(this.serverless, 'service.package.individually', false))
         .then(() => this.serverless.pluginManager.spawn('webpack:validate'))
         .then(() => this.serverless.pluginManager.spawn('webpack:compile'))
+        .then(this.packExternalModules)
         .then(this.prepareRun),
 
       'webpack:webpack': () => BbPromise.bind(this)
