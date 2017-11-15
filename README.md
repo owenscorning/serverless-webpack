@@ -339,6 +339,19 @@ All options that are supported by invoke local can be used as usual:
 
 > :exclamation: The old `webpack watch` command has been disabled.
 
+### Usage with serverless run (Serverless Event Gateway)
+
+The `serverless run` command is supported with the plugin. To test a local
+service with the Serverless Event Gateway, you can use the `serverless run`
+command as documented by Serverless. The command will compile the code before
+it uploads it into the event gateway.
+
+#### Serverless run with webpack watch mode
+
+You can enable source watch mode with `serverless run --watch`. The plugin will
+then watch for any source changes, recompile and redeploy the code to the event
+gateway. So you can just keep the event gateway running and test new code immediately.
+
 ### Usage with serverless-offline
 
 The plugin integrates very well with [serverless-offline][link-serverless-offline] to
